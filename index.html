@@ -5,57 +5,380 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChainTrail — Bitcoin AML Forensics</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0e1a; color: #e2e8f0; font-family: monospace; }
-  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
-  h1 { font-size: 3rem; color: #3b82f6; margin-bottom: 1rem; }
-  p { color: #64748b; font-size: 1.1rem; max-width: 500px; margin-bottom: 2rem; line-height: 1.7; }
-  .badges { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; }
-  .badge { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.8rem; }
-  .btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-  .btn { padding: 0.75rem 2rem; border-radius: 8px; font-size: 0.9rem; font-weight: bold; text-decoration: none; cursor: pointer; border: none; }
-  .btn-primary { background: #3b82f6; color: white; }
-  .btn-secondary { background: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
-  .features { padding: 4rem 2rem; max-width: 900px; margin: 0 auto; }
-  .features h2 { text-align: center; font-size: 1.8rem; margin-bottom: 3rem; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-  .card { background: #0f1628; border: 1px solid #1e2d4a; border-radius: 12px; padding: 1.5rem; }
-  .card h3 { color: #3b82f6; margin-bottom: 0.5rem; }
-  .card p { color: #64748b; font-size: 0.85rem; }
-  footer { text-align: center; padding: 2rem; color: #334155; font-size: 0.8rem; border-top: 1px solid #1e2d4a; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0e1a; color: #e2e8f0; font-family: 'Courier New', monospace; }
+nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid #1e2d4a; }
+.logo { font-size: 1.3rem; font-weight: bold; color: #3b82f6; }
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-links a { color: #64748b; text-decoration: none; font-size: 0.85rem; }
+.nav-links a:hover { color: #e2e8f0; }
+.btn { padding: 0.5rem 1.25rem; border-radius: 6px; font-size: 0.85rem; font-weight: bold; text-decoration: none; cursor: pointer; border: none; display: inline-block; }
+.btn-primary { background: #3b82f6; color: white; }
+.btn-outline { background: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
+.hero { padding: 6rem 2rem; text-align: center; max-width: 800px; margin: 0 auto; }
+.hero-badge { display: inline-block; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.75rem; margin-bottom: 2rem; }
+.hero h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 1.5rem; }
+.hero h1 span { color: #3b82f6; }
+.hero p { color: #64748b; font-size: 1.1rem; max-width: 550px; margin: 0 auto 2.5rem; line-height: 1.8; }
+.hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+.stats { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat-num { font-size: 2rem; font-weight: bold; color: #3b82f6; }
+.stat-label { font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; }
+.features { padding: 5rem 2rem; max-width: 1000px; margin: 0 auto; }
+.features h2 { text-align: center; font-size: 2rem; margin-bottom: 1rem; }
+.features-sub { text-align: center; color: #64748b; margin-bottom: 3rem; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.feature-card { background: #0f1628; border: 1px solid #1e2d4a; border-radius: 12px; padding: 1.75rem; transition: border-color 0.2s; }
+.feature-card:hover { border-color: #3b82f6; }
+.feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+.feature-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+.feature-card p { font-size: 0.83rem; color: #64748b; line-height: 1.6; }
+.pricing { padding: 5rem 2rem; text-align: center; background: #0d1220; }
+.pricing h2 { font-size: 2rem; margin-bottom: 1rem; }
+.pricing-sub { color: #64748b; margin-bottom: 3rem; }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto 3rem; }
+.plan { background: #0f1628; border: 2px solid #1e2d4a; border-radius: 12px; padding: 2rem; text-align: left; position: relative; }
+.plan.popular { border-color: #3b82f6; }
+.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: white; font-size: 0.7rem; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 100px; white-space: nowrap; }
+.plan-name { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.5rem; }
+.plan-price { font-size: 2.5rem; font-weight: bold; color: #3b82f6; }
+.plan-price span { font-size: 0.9rem; color: #64748b; }
+.plan-features { list-style: none; margin: 1.5rem 0; }
+.plan-features li { font-size: 0.83rem; color: #94a3b8; padding: 0.3rem 0; display: flex; gap: 0.5rem; }
+.plan-features li::before { content: "✓"; color: #22c55e; flex-shrink: 0; }
+.plan-btn { width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; border: none; margin-top: 1rem; transition: opacity 0.2s; }
+.plan-btn:hover { opacity: 0.85; }
+.plan-btn-primary { background: #3b82f6; color: white; }
+.plan-btn-secondary { background: #1e2d4a; color: #e2e8f0; }
+.plan-btn-purple { background: #8b5cf6; color: white; }
+
+/* Crypto Payment Modal */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal { background: #0f1628; border: 1px solid #1e2d4a; border-radius: 16px; padding: 2rem; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.modal-header h3 { font-size: 1.2rem; color: #e2e8f0; }
+.modal-close { background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer; }
+.modal-plan-summary { background: #060a14; border: 1px solid #1e2d4a; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+.modal-plan-name { font-weight: bold; color: #e2e8f0; }
+.modal-plan-price { font-size: 1.5rem; font-weight: bold; color: #3b82f6; }
+.crypto-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.crypto-tab { padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #1e2d4a; background: transparent; color: #64748b; cursor: pointer; font-size: 0.8rem; font-family: monospace; transition: all 0.2s; }
+.crypto-tab.active { background: #3b82f6; border-color: #3b82f6; color: white; }
+.crypto-panel { display: none; }
+.crypto-panel.active { display: block; }
+.crypto-amount { text-align: center; margin-bottom: 1.5rem; }
+.crypto-amount .amount { font-size: 1.8rem; font-weight: bold; color: #e2e8f0; }
+.crypto-amount .usd { font-size: 0.85rem; color: #64748b; margin-top: 0.25rem; }
+.address-box { background: #060a14; border: 1px solid #1e2d4a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+.address-label { font-size: 0.75rem; color: #64748b; margin-bottom: 0.5rem; }
+.address-value { font-family: monospace; font-size: 0.75rem; color: #a5b4fc; word-break: break-all; line-height: 1.5; }
+.copy-btn { width: 100%; padding: 0.6rem; background: #1e2d4a; border: none; border-radius: 6px; color: #e2e8f0; cursor: pointer; font-size: 0.8rem; margin-top: 0.5rem; transition: background 0.2s; }
+.copy-btn:hover { background: #2d3f5e; }
+.copy-btn.copied { background: #166534; color: #4ade80; }
+.payment-instructions { background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+.payment-instructions p { font-size: 0.8rem; color: #94a3b8; line-height: 1.6; }
+.payment-instructions ol { font-size: 0.8rem; color: #94a3b8; padding-left: 1.2rem; line-height: 2; }
+.confirm-btn { width: 100%; padding: 0.85rem; background: #22c55e; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; margin-top: 0.5rem; }
+.confirm-btn:hover { background: #16a34a; }
+.network-badge { display: inline-block; background: rgba(234,179,8,0.15); border: 1px solid rgba(234,179,8,0.3); color: #fde047; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; margin-left: 0.5rem; }
+
+/* How it works */
+.how { padding: 5rem 2rem; max-width: 800px; margin: 0 auto; text-align: center; }
+.how h2 { font-size: 2rem; margin-bottom: 3rem; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; }
+.step { text-align: center; }
+.step-num { width: 3rem; height: 3rem; border-radius: 50%; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); color: #3b82f6; font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+.step h3 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+.step p { font-size: 0.8rem; color: #64748b; line-height: 1.5; }
+
+footer { padding: 2rem; text-align: center; border-top: 1px solid #1e2d4a; color: #334155; font-size: 0.8rem; }
+footer a { color: #3b82f6; text-decoration: none; }
+@media (max-width: 600px) {
+  .hero h1 { font-size: 2.2rem; }
+  .nav-links { display: none; }
+  .stats { gap: 1.5rem; }
+}
 </style>
 </head>
 <body>
-<div class="hero">
-  <h1>⛓ ChainTrail</h1>
-  <p>Real-time Bitcoin AML forensics and transaction trail tracker. Trace fund flows, detect money laundering patterns, and flag sanctioned addresses.</p>
-  <div class="badges">
-    <span class="badge">Live Mempool</span>
-    <span class="badge">Graph Tracer</span>
-    <span class="badge">OFAC Sanctions</span>
-    <span class="badge">ETH Support</span>
-    <span class="badge">Open Source</span>
+
+<nav>
+  <div class="logo">⛓ ChainTrail</div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="https://github.com/rajeshselvam02/chaintail">GitHub</a>
+    <a href="#pricing" class="btn btn-primary">Get Started</a>
   </div>
-  <div class="btns">
-    <a href="https://github.com/rajeshselvam02/chaintail" class="btn btn-primary">View on GitHub</a>
-    <a href="mailto:rajesh.chaintail@zoho.com" class="btn btn-secondary">Contact Sales</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">🔴 Live — Monitoring Bitcoin Mempool Now</div>
+  <h1>Bitcoin <span>AML Forensics</span><br>for Everyone</h1>
+  <p>Trace fund flows, detect money laundering patterns, and flag OFAC sanctioned addresses in real time.</p>
+  <div class="hero-btns">
+    <a href="#pricing" class="btn btn-primary">Start Free — No Credit Card</a>
+    <a href="https://github.com/rajeshselvam02/chaintail" class="btn btn-outline">View Source Code</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">1,258+</div><div class="stat-label">Bad actor addresses</div></div>
+    <div class="stat"><div class="stat-num">20K+</div><div class="stat-label">Live txs monitored</div></div>
+    <div class="stat"><div class="stat-num">14</div><div class="stat-label">API endpoints</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Open source</div></div>
   </div>
 </div>
 
-<div class="features">
-  <h2>Everything you need for blockchain forensics</h2>
-  <div class="grid">
-    <div class="card"><h3>⚡ Live Mempool</h3><p>Stream every Bitcoin transaction in real time via WebSocket. Monitor 20,000+ unconfirmed transactions.</p></div>
-    <div class="card"><h3>🔍 Graph Tracer</h3><p>Trace fund flows N hops deep using PostgreSQL recursive CTEs. Visualize with interactive D3.js graph.</p></div>
-    <div class="card"><h3>🏴 Threat Intel</h3><p>1,258+ known bad actors including WannaCry, Lazarus Group, Silk Road, mixers and OFAC sanctions.</p></div>
-    <div class="card"><h3>🎯 ML Risk Scoring</h3><p>Feature-based ML scoring system rates every address 0-100 based on proximity to known bad actors.</p></div>
-    <div class="card"><h3>📋 Case Management</h3><p>Create investigation cases, attach addresses, add notes and export professional PDF reports.</p></div>
-    <div class="card"><h3>🔷 Ethereum Support</h3><p>Trace ETH addresses and token transfers. Detect Tornado Cash and other sanctioned contracts.</p></div>
+<div class="features" id="features">
+  <h2>Everything for Blockchain Forensics</h2>
+  <p class="features-sub">From live mempool monitoring to multi-hop graph tracing</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">⚡</div><h3>Live Mempool Stream</h3><p>WebSocket connection to mempool.space. Every Bitcoin transaction pushed instantly.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔍</div><h3>Graph Tracer</h3><p>Trace fund flows N hops deep. Interactive D3.js visualization with threat highlighting.</p></div>
+    <div class="feature-card"><div class="feature-icon">🏴</div><h3>Threat Intelligence</h3><p>1,258+ bad actors including WannaCry, Lazarus Group, Silk Road and OFAC sanctions.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎯</div><h3>ML Risk Scoring</h3><p>Feature-based ML rates every address 0-100 based on behavior and proximity to bad actors.</p></div>
+    <div class="feature-card"><div class="feature-icon">📋</div><h3>Case Management</h3><p>Investigation cases with suspect addresses, notes and professional PDF report export.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔷</div><h3>Ethereum Support</h3><p>Trace ETH addresses, ERC-20 transfers, detect Tornado Cash and sanctioned contracts.</p></div>
+  </div>
+</div>
+
+<div class="pricing" id="pricing">
+  <h2>Simple Pricing</h2>
+  <p class="pricing-sub">Pay with crypto — BTC, ETH, or USDT accepted</p>
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">$0 <span>/ forever</span></div>
+      <ul class="plan-features">
+        <li>100 traces per month</li>
+        <li>1,000 API calls</li>
+        <li>1 watched address</li>
+        <li>3 hop depth</li>
+        <li>Live mempool monitor</li>
+        <li>Threat intel database</li>
+        <li>Graph visualizer</li>
+      </ul>
+      <button class="plan-btn plan-btn-secondary" onclick="window.location.href='https://github.com/rajeshselvam02/chaintail'">
+        Self-Host Free
+      </button>
+    </div>
+    <div class="plan popular">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">$29 <span>/ month</span></div>
+      <ul class="plan-features">
+        <li>10,000 traces per month</li>
+        <li>50,000 API calls</li>
+        <li>50 watched addresses</li>
+        <li>5 hop depth</li>
+        <li>PDF report export</li>
+        <li>Webhook alerts</li>
+        <li>Pattern detection</li>
+        <li>Entity labels</li>
+        <li>API key access</li>
+      </ul>
+      <button class="plan-btn plan-btn-primary" onclick="openCheckout('Pro', 29)">
+        Pay with Crypto
+      </button>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price">$99 <span>/ month</span></div>
+      <ul class="plan-features">
+        <li>Unlimited traces</li>
+        <li>Unlimited API calls</li>
+        <li>Unlimited watched addresses</li>
+        <li>10 hop depth</li>
+        <li>Case management</li>
+        <li>ML risk scoring</li>
+        <li>Ethereum support</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="plan-btn plan-btn-purple" onclick="openCheckout('Enterprise', 99)">
+        Pay with Crypto
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="how">
+  <h2>How Payment Works</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Choose Plan</h3>
+      <p>Select Pro or Enterprise and click Pay with Crypto</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Send Payment</h3>
+      <p>Send the exact amount in BTC, ETH or USDT to our wallet</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Confirm</h3>
+      <p>Click Confirm Payment and email your transaction hash</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Get Access</h3>
+      <p>We activate your account within 1 hour of confirmation</p>
+    </div>
   </div>
 </div>
 
 <footer>
-  ChainTrail v0.1.0 — Open Source MIT License — Built by Rajesh Selvam
+  <p>ChainTrail v0.1.0 — MIT License — Built by <a href="https://github.com/rajeshselvam02">Rajesh Selvam</a></p>
+  <p style="margin-top:0.5rem;">Questions? <a href="mailto:rajeshselvam02@gmail.com">rajeshselvam02@gmail.com</a></p>
 </footer>
+
+<!-- Crypto Payment Modal -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>💳 Crypto Checkout</h3>
+      <button class="modal-close" onclick="closeCheckout()">×</button>
+    </div>
+
+    <div class="modal-plan-summary">
+      <div>
+        <div class="modal-plan-name" id="modalPlanName">Pro Plan</div>
+        <div style="font-size:0.75rem;color:#64748b">Monthly subscription</div>
+      </div>
+      <div class="modal-plan-price" id="modalPlanPrice">$29</div>
+    </div>
+
+    <div class="crypto-tabs">
+      <button class="crypto-tab active" onclick="selectCrypto('btc')">₿ Bitcoin</button>
+      <button class="crypto-tab" onclick="selectCrypto('eth')">Ξ Ethereum</button>
+      <button class="crypto-tab" onclick="selectCrypto('usdt')">₮ USDT (TRC20)</button>
+    </div>
+
+    <!-- BTC Panel -->
+    <div class="crypto-panel active" id="panel-btc">
+      <div class="crypto-amount">
+        <div class="amount" id="btc-amount">≈ 0.00045 BTC</div>
+        <div class="usd">at current market rate</div>
+      </div>
+      <div class="address-box">
+        <div class="address-label">Send BTC to this address (Native SegWit)</div>
+        <div class="address-value" id="btc-addr">bc1pgafjac5q44t0uk8jphzazzm5a70mqsj60vmhmrzr5pwdqj0hckksz59xje</div>
+        <button class="copy-btn" onclick="copyAddress('btc-addr', this)">📋 Copy BTC Address</button>
+      </div>
+    </div>
+
+    <!-- ETH Panel -->
+    <div class="crypto-panel" id="panel-eth">
+      <div class="crypto-amount">
+        <div class="amount" id="eth-amount">≈ 0.012 ETH</div>
+        <div class="usd">at current market rate</div>
+      </div>
+      <div class="address-box">
+        <div class="address-label">Send ETH to this address <span class="network-badge">ERC-20</span></div>
+        <div class="address-value" id="eth-addr">0xe71f0006B39a3edB5e73795678B1F2e78b8C9Eb6</div>
+        <button class="copy-btn" onclick="copyAddress('eth-addr', this)">📋 Copy ETH Address</button>
+      </div>
+    </div>
+
+    <!-- USDT Panel -->
+    <div class="crypto-panel" id="panel-usdt">
+      <div class="crypto-amount">
+        <div class="amount" id="usdt-amount">29 USDT</div>
+        <div class="usd">stable — no conversion needed</div>
+      </div>
+      <div class="address-box">
+        <div class="address-label">Send USDT to this address <span class="network-badge">TRC-20</span></div>
+        <div class="address-value" id="usdt-addr">TX3GEJAKqgS2wNNvGzF6kvXaTSKJMH3a7A</div>
+        <button class="copy-btn" onclick="copyAddress('usdt-addr', this)">📋 Copy USDT Address</button>
+      </div>
+    </div>
+
+    <div class="payment-instructions">
+      <ol>
+        <li>Send the exact amount shown above</li>
+        <li>Wait for 1-3 network confirmations</li>
+        <li>Click Confirm Payment below</li>
+        <li>We activate your account within 1 hour</li>
+      </ol>
+    </div>
+
+    <button class="confirm-btn" onclick="confirmPayment()">
+      ✅ I've Sent the Payment — Confirm
+    </button>
+  </div>
+</div>
+
+<script>
+  const WALLETS = {
+    btc: 'bc1pgafjac5q44t0uk8jphzazzm5a70mqsj60vmhmrzr5pwdqj0hckksz59xje',
+    eth: '0xe71f0006B39a3edB5e73795678B1F2e78b8C9Eb6',
+    usdt: 'TX3GEJAKqgS2wNNvGzF6kvXaTSKJMH3a7A'
+  };
+
+  let currentPlan = 'Pro';
+  let currentPrice = 29;
+  let currentCrypto = 'btc';
+
+  function openCheckout(plan, price) {
+    currentPlan = plan;
+    currentPrice = price;
+    document.getElementById('modalPlanName').textContent = plan + ' Plan';
+    document.getElementById('modalPlanPrice').textContent = '$' + price;
+    updateAmounts(price);
+    document.getElementById('checkoutModal').classList.add('open');
+  }
+
+  function closeCheckout() {
+    document.getElementById('checkoutModal').classList.remove('open');
+  }
+
+  function selectCrypto(crypto) {
+    currentCrypto = crypto;
+    document.querySelectorAll('.crypto-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.crypto-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('panel-' + crypto).classList.add('active');
+  }
+
+  function updateAmounts(usdPrice) {
+    // Approximate rates - in production fetch live rates
+    const btcRate = 65000;
+    const ethRate = 2400;
+    document.getElementById('btc-amount').textContent = '≈ ' + (usdPrice / btcRate).toFixed(6) + ' BTC';
+    document.getElementById('eth-amount').textContent = '≈ ' + (usdPrice / ethRate).toFixed(4) + ' ETH';
+    document.getElementById('usdt-amount').textContent = usdPrice + ' USDT';
+  }
+
+  function copyAddress(elementId, btn) {
+    const text = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '📋 Copy Address';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  function confirmPayment() {
+    const subject = encodeURIComponent('ChainTrail ' + currentPlan + ' Payment Confirmation');
+    const body = encodeURIComponent(
+      'Hi,\n\nI have sent payment for ChainTrail ' + currentPlan + ' Plan ($' + currentPrice + '/month).\n\n' +
+      'Payment method: ' + currentCrypto.toUpperCase() + '\n' +
+      'Transaction hash: [PASTE YOUR TX HASH HERE]\n\n' +
+      'My account email: [YOUR EMAIL]\n\n' +
+      'Please activate my account.\n\nThank you!'
+    );
+    window.location.href = 'mailto:rajeshselvam02@gmail.com?subject=' + subject + '&body=' + body;
+  }
+
+  // Close modal on overlay click
+  document.getElementById('checkoutModal').addEventListener('click', function(e) {
+    if (e.target === this) closeCheckout();
+  });
+</script>
+
 </body>
 </html>
