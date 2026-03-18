@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChainTrail — Bitcoin AML Forensics</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e1a; color: #e2e8f0; font-family: monospace; }
+  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+  h1 { font-size: 3rem; color: #3b82f6; margin-bottom: 1rem; }
+  p { color: #64748b; font-size: 1.1rem; max-width: 500px; margin-bottom: 2rem; line-height: 1.7; }
+  .badges { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; }
+  .badge { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.8rem; }
+  .btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn { padding: 0.75rem 2rem; border-radius: 8px; font-size: 0.9rem; font-weight: bold; text-decoration: none; cursor: pointer; border: none; }
+  .btn-primary { background: #3b82f6; color: white; }
+  .btn-secondary { background: transparent; color: #3b82f6; border: 1px solid #3b82f6; }
+  .features { padding: 4rem 2rem; max-width: 900px; margin: 0 auto; }
+  .features h2 { text-align: center; font-size: 1.8rem; margin-bottom: 3rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+  .card { background: #0f1628; border: 1px solid #1e2d4a; border-radius: 12px; padding: 1.5rem; }
+  .card h3 { color: #3b82f6; margin-bottom: 0.5rem; }
+  .card p { color: #64748b; font-size: 0.85rem; }
+  footer { text-align: center; padding: 2rem; color: #334155; font-size: 0.8rem; border-top: 1px solid #1e2d4a; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>⛓ ChainTrail</h1>
+  <p>Real-time Bitcoin AML forensics and transaction trail tracker. Trace fund flows, detect money laundering patterns, and flag sanctioned addresses.</p>
+  <div class="badges">
+    <span class="badge">Live Mempool</span>
+    <span class="badge">Graph Tracer</span>
+    <span class="badge">OFAC Sanctions</span>
+    <span class="badge">ETH Support</span>
+    <span class="badge">Open Source</span>
+  </div>
+  <div class="btns">
+    <a href="https://github.com/rajeshselvam02/chaintail" class="btn btn-primary">View on GitHub</a>
+    <a href="mailto:rajesh.chaintail@zoho.com" class="btn btn-secondary">Contact Sales</a>
+  </div>
+</div>
+
+<div class="features">
+  <h2>Everything you need for blockchain forensics</h2>
+  <div class="grid">
+    <div class="card"><h3>⚡ Live Mempool</h3><p>Stream every Bitcoin transaction in real time via WebSocket. Monitor 20,000+ unconfirmed transactions.</p></div>
+    <div class="card"><h3>🔍 Graph Tracer</h3><p>Trace fund flows N hops deep using PostgreSQL recursive CTEs. Visualize with interactive D3.js graph.</p></div>
+    <div class="card"><h3>🏴 Threat Intel</h3><p>1,258+ known bad actors including WannaCry, Lazarus Group, Silk Road, mixers and OFAC sanctions.</p></div>
+    <div class="card"><h3>🎯 ML Risk Scoring</h3><p>Feature-based ML scoring system rates every address 0-100 based on proximity to known bad actors.</p></div>
+    <div class="card"><h3>📋 Case Management</h3><p>Create investigation cases, attach addresses, add notes and export professional PDF reports.</p></div>
+    <div class="card"><h3>🔷 Ethereum Support</h3><p>Trace ETH addresses and token transfers. Detect Tornado Cash and other sanctioned contracts.</p></div>
+  </div>
+</div>
+
+<footer>
+  ChainTrail v0.1.0 — Open Source MIT License — Built by Rajesh Selvam
+</footer>
+</body>
+</html>
